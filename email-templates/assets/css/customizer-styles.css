@@ -97,7 +97,7 @@
 }
 
 /* Template Control */
-.customize-control-mailtpltemplateload .image-radio-select label {
+.customize-control-mailtpl-template-load .image-radio-select label {
 	display: block;
     height: auto;
     float: none;
@@ -107,7 +107,7 @@
     box-shadow: none;
     box-sizing: border-box;
 }
-#customize-controls .customize-control-mailtpltemplateload label img {
+#customize-controls .customize-control-mailtpl-template-load label img {
 	border: 4px solid #ccc;
     box-sizing: border-box;
     cursor: pointer;
@@ -115,10 +115,10 @@
     max-width: 100%;
     padding: 1px;
 }
-#customize-controls .customize-control-mailtpltemplateload label.mailtplactive img {
+#customize-controls .customize-control-mailtpl-template-load label.mailtplactive img {
 	border-color: #00a0d2;
 }
-.customize-control-mailtpltemplateload .mailtpl-template-woomail-load-controls:after {
+.customize-control-mailtpl-template-load .mailtpl-template-woomail-load-controls:after {
     clear: both;
     display: table;
     content: '';

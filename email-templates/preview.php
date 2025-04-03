@@ -27,9 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 		<meta name="viewport" content="width=device-width" />
 
-		<title><?php echo __( 'Email Composer', 'email-templates' ); ?></title>
+		<title><?php echo esc_attr__( 'Email Composer', 'email-templates' ); ?></title>
 
-		<style type="text/css" id="Mailtpl_Woomailcustom_css"><?php echo Mailtpl_Woomail_Customizer::opt( 'custom_css' ); ?>.woocommerce-store-notice.demo_store, .mfp-hide {display: none;}</style>
+		<style type="text/css" id="Mailtpl_Woomailcustom_css"><?php echo esc_attr( Mailtpl_Woomail_Customizer::opt( 'custom_css' ) ); ?>.woocommerce-store-notice.demo_store, .mfp-hide {display: none;}</style>
 
 	</head>
 
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php Mailtpl_Woomail_Preview::print_preview_email(); ?>
 
 		</div>
-		
+
 		<?php
 		do_action( 'woomail_footer' );
 		wp_footer();

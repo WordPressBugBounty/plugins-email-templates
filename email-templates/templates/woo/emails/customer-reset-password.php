@@ -1,59 +1,69 @@
 <?php
 /**
- * Customer Reset Password email
- *
+ * Customer reset password email
  * This template can be overridden by copying it to yourtheme/woocommerce/emails/customer-reset-password.php.
  *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates/Emails
- * @version 4.0.0
+ * @package Email Templates
  */
 
-/**
- * NOTES ABOUT TEMPLATE EDIT FOR MAILTPL WOOMAIL Composer, 
- * 1. add hook 'Mailtpl_Woomailemail_details' to pull in main text
- * 2. Remove static main text area.
- */
+defined( 'ABSPATH' ) || exit;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+$button_check = true; // Set to false to remove button.
 
-$button_check = Mailtpl_Woomail_Customizer::opt( 'customer_reset_password_btn_switch' );
+do_action( 'woocommerce_email_header', $email_heading, $email );
 
-do_action( 'woocommerce_email_header', $email_heading, $email ); 
+do_action( 'mailtpl_woomailemail_text', $email );
 
-/**
- * @hooked Mailtpl_Woomail_Composer::email_main_text_area_no_order
- */
-do_action( 'Mailtpl_Woomailemail_text', $email ); 
+$reset_link = add_query_arg(
+	array(
+		'key' => $reset_key,
+		'id'  => $user_id,
+	),
+	wc_get_endpoint_url( 'lost-password', '', wc_get_page_permalink( 'myaccount' ) )
+);
 
-if ( true == $button_check ) {
-	echo '<p class="btn-container"><a href="' . esc_url( add_query_arg( array( 'key' => $reset_key, 'id' => $user_id ), wc_get_endpoint_url( 'lost-password', '', wc_get_page_permalink( 'myaccount' ) ) ) ) . '" class="btn">' . esc_html__( 'Reset Password', 'woocommerce' ) . '</a></p>';
+$button_border_width       = mailtpl_get_options( 'button_border_width', '' );
+$button_border_style       = mailtpl_get_options( 'button_border_style', '' );
+$button_border_color       = mailtpl_get_options( 'button_border_color', '' );
+$button_text_color         = mailtpl_get_options( 'button_text_color', '' );
+$button_font_size          = mailtpl_get_options( 'button_font_size', '' );
+$button_background_color   = mailtpl_get_options( 'button_background_color', '' );
+$button_border_radius      = mailtpl_get_options( 'button_border_radius', '' );
+$button_font_family        = mailtpl_get_options( 'button_font_family', '' );
+$button_font_weight        = mailtpl_get_options( 'button_font_weight', '' );
+$button_padding_top_bottom = mailtpl_get_options( 'button_padding_top_bottom', '' );
+$button_padding_left_right = mailtpl_get_options( 'button_padding_left_right', '' );
+$border                    = sprintf( '%1$spx %2$s %3$s', $button_border_width, $button_border_style, $button_border_color );
+
+if ( true === $button_check ) { ?>
+	<p class="button-container" style="padding: <?php echo esc_attr( $button_padding_top_bottom ); ?>px <?php echo esc_attr( $button_padding_left_right ); ?>px;">
+		<a
+				href="<?php echo esc_url( $reset_link ); ?>"
+				class="btn"
+				style="
+					color:         <?php echo sanitize_hex_color( $button_text_color ); ?>!important;
+					font-size:     <?php echo esc_attr( $button_font_size ); ?>px;
+					background:    <?php echo sanitize_hex_color( $button_background_color ); ?>;
+					border-radius: <?php echo esc_attr( $button_border_radius ); ?>px;
+					border:        <?php echo esc_attr( $border ); ?>;
+					font-family:   <?php echo esc_attr( $button_font_family ); ?>;
+					font-weight:   <?php echo esc_attr( $button_font_weight ); ?>;
+					padding:       <?php echo esc_attr( $button_padding_top_bottom ); ?>px <?php echo esc_attr( $button_padding_left_right ); ?>px;
+				"><?php esc_html_e( 'Reset Password', 'woocommerce' ); ?></a>
+	</p>
+	<?php
 } else {
 	?>
 	<p>
-		<a class="link" href="<?php echo esc_url( add_query_arg( array( 'key' => $reset_key, 'id' => $user_id ), wc_get_endpoint_url( 'lost-password', '', wc_get_page_permalink( 'myaccount' ) ) ) ); ?>">
-				<?php esc_html_e( 'Click here to reset your password', 'woocommerce' ); ?></a>
+		<a href="<?php echo esc_url( $reset_link ); ?>" class="link"><?php esc_html_e( 'Click here to reset your password', 'woocommerce' ); ?></a>
 	</p>
 	<?php
 }
 ?>
 <p></p>
 <?php
-/**
- * Show user-defined additonal content - this is set in each email's settings.
- */
-if ( $additional_content ) {
+if ( isset( $additional_content ) && ! empty( $additional_content ) ) {
 	echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) );
 }
 
 do_action( 'woocommerce_email_footer', $email );
-?>

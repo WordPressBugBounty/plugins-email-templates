@@ -2,15 +2,14 @@
 Contributors: wpexpertsio
 Tags: Email templates, email designer, email customizer, email, woocommerce email
 Requires at least: 7.4
-Tested up to: 6.5
-Stable tag: 1.4.4
+Tested up to: 6.5.4
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Design and send custom emails with Email Templates plugin for WordPress and WooCommerce
-== Description ==
 
-[Download Beta v1.5](https://downloads.wordpress.org/plugin/email-templates.1.5-beta.1.zip)
+== Description ==
 
 Email Templates is a WordPress plugin that allows you to customize your WooCommerce and WordPress website’s default transactional email designs and templates. 
 
@@ -81,23 +80,66 @@ Send your translations to [Transifex](https://www.transifex.com/projects/p/wp-em
 
 = Collaborate in Github = - [https://github.com/wpexpertsio/wordpress-email-templates](https://github.com/wpexpertsio/wordpress-email-templates)
 
-== 🚀 Email Template Beta v1.5 is available ==
+= Latest Update =
 
-We are delighted to announce the release of the beta version of our plugin that has new exciting features that could be utilized to enhance your email customization experience. Newly launched Beta has loads of new features including but not limited to:
+**Email Templates v1.5**
 
-**Customizable WooCommerce Email Template:**
+**Text box implementation**
+Added a text box above the slider so the Administrator can manually enter the number. In the color option, the admin can select the color from the color grid and can also enter the color code manually.
 
-Users can now completely customize their WooCommerce email templates to better suit the brand and enhance customer engagement.
+**Template Settings**
+Gave the option a particular name called “Template Setting”
 
-**Advanced Personalization options:**
+**Relocated the **Border Color** option in Template Settings**
+Now, the Border Color option would appear after the **Border Right Width** option and above the **Border Radius** option to define the border widths properly. 
 
-Users can now personalize the header of their WP and WooCommerce generated emails, by adding custom text & images and making them more visually appealing for customers.
+**Rename and Capitalization of Options For Template Settings**
+Some option names, such as ‘bottom padding’, ‘Custom css’, and ‘box shadow’, have been capitalized for better readability. 
 
-**Tailored Fonts attributes:**
+**Rename and Capitalization of Options for Email Header**
+Spelling Corrections, Capitalization, and the Renaming of options in the Email Header tab. 
 
-Users can now alter the font styles, size and weight to make the mails more interactive and easy to wade through the emails.
+**Rename and Capitalization of Options in Email Body**
+Spelling Corrections, Capitalization, and the Renaming of options in the Email Body tab. 
 
-*Note: Your kind feedback is invaluable in shaping our products to make them more user friendly and improve user experience. [Click here](https://wordpress.org/support/plugin/email-templates/) to share your suggestions for the beta version and use “BETA” in the topic title to clarify it. [Download Beta](https://downloads.wordpress.org/plugin/email-templates.1.5-beta.1.zip)*
+**Slider Issue In Footer Text Padding Top And Footer Text Padding Bottom Options**
+Added a textbox to manually adjust the slider in the ‘Footer Text Padding Top’ and ‘Footer Text Padding Bottom’ options in the Footer tab. 
+
+**Rename and Capitalization of Options in Footer**
+Spelling corrections, capitalization, and the renaming of options in the **Footer** tab. 
+
+**Rename and Capitalization of Options in Subtitle Styles (WooCommerce)**
+Spelling Corrections, capitalization, and the renaming of options in the **Subtitle Styles (WooCommerce)** tab. 
+
+**Dropdown Menu was not appearing correctly**
+The dropdown menu was appearing incorrectly, and the first option should be selected by default since it works like that in the previous options. Now it has been fixed. 
+
+**Order Table Styles option | No reflection in real-time**
+Previously, this option was not reflecting any change when any sub-option was selected from the dropdown menu. It has been fixed now. 
+
+**Product Image & Product Image Size options | No reflection in real-time**
+Both options (Product Image & Product Image Size) were not reflecting any change when any sub-option was selected from the dropdown menu. It has been fixed now. 
+
+**Order Table Border Color option | No reflection in real-time**
+Previously, this option was not reflecting any change in real time. Now it has been fixed. 
+
+**Order Table Heading Style option | No reflection on real-time**
+Previously, this option was not reflecting any change in real time. Now it has been fixed.  
+
+**Slider issue in Footer Text Padding Top/Bottom, Left/Right, and Border Width options**
+The numbers were not appearing on the slider in the **Padding Top/Bottom** and **Padding Left/Right** options in the **Footer** tab. Now it has been fixed by implementing a text box so the admin can manually enter the numbers. 
+
+**Enable order notes to be moved bellow option | Spelling mistake and No reflection on real-time | Order Items Styles (WooCommerce)**
+Spelling correction was made, and real-time reflection was fixed. 
+
+**Rename the "Clear" button to "Default" in color grid options - Order Items Styles (WooCommerce)**
+The color grid option had the option name “Clear” which has been replaced by “Default” for better user understanding. 
+
+**Rename and Capitalization of Options in Order Items Styles (WooCommerce)**
+Spelling mistakes and capitalization of words were corrected in various places.
+
+**Button Font Size option Slider issue in Button Style (WooCommerce)**
+The numbers were not appearing on the slider in the **Button Font Size** option in the Footer tab. Now it has been fixed by implementing a text box to enable the admin to enter numbers manually. 
 
 == Installation ==
 
@@ -128,8 +170,9 @@ Copy the templates folder into your theme, then in functions.php add the followi
 
 == Changelog ==
 
-= 1.4.4 =
-* Compatible with WordPress v6.5
+= 1.5 =
+* New - Added a text box above the slider.
+* Tweak - Minor improvements & code optimization.
 
 = 1.4.3 =
 * Improvement - Code Optimization.

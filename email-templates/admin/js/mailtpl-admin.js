@@ -25,7 +25,7 @@
             $('#mailtpl-spinner').fadeIn();
             $.ajax({
                 url     : ajaxurl,
-                data    : { action: 'mailtpl_send_email', _wpnonce: mailtpl_object._wpnonce }
+                data    : { action: 'mailtpl_send_email', _wpnonce: mailtpl_scripts_nonce._wpnonce }
             }).done(function(data) {
                 $('#mailtpl-spinner').fadeOut();
                 $('#mailtpl-success').fadeIn().delay(3000).fadeOut();

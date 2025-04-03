@@ -1,40 +1,24 @@
 <?php
 /**
- * Additional Customer Details
+ * Customer reset password email
+ * This template can be overridden by copying it to yourtheme/woocommerce/emails/customer-reset-password.php.
  *
- * This is extra customer data which can be filtered by plugins. It outputs below the order item table.
- *
- * This template can be overridden by copying it to yourtheme/woocommerce/emails/email-customer-details.php.
- *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
- * @package WooCommerce/Templates/Emails
- * @version 2.5.0
+ * @package Email Templates
  */
 
-/** 
- * EDIT NOTES FOR MAILTPL WOOMAIL Composer
- *
- *
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 ?>
+
 <?php if ( ! empty( $fields ) ) : ?>
-	<div class="email-spacing-wrap" style="margin-bottom: 40px;">
-		<h2><?php _e( 'Customer details', 'woocommerce' ); ?></h2>
+	<div class="email-spacing-wrap" style="margin-top: 40px;">
+		<h2><?php esc_attr_e( 'Customer Details', 'woocommerce' ); ?></h2>
 		<ul>
 			<?php foreach ( $fields as $field ) : ?>
-				<li><strong><?php echo wp_kses_post( $field['label'] ); ?>:</strong> <span class="text"><?php echo wp_kses_post( $field['value'] ); ?></span></li>
+				<li>
+					<strong><?php echo esc_html( $field['label'] ); ?>:</strong>
+					<span class="text"><?php echo wp_kses_post( $field['value'] ); ?></span>
+				</li>
 			<?php endforeach; ?>
 		</ul>
 	</div>

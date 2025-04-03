@@ -151,21 +151,21 @@ jQuery(document).ready(function() {
 
 ( function( $ ) {
 	
-	var KWMDIE = {
+	var mailtpl_import_export_settings = {
 	
 		init: function() {
-			$( 'input[name=mailtpl-woomail-export-button]' ).on( 'click', KWMDIE._export );
-			$( 'input[name=mailtpl-woomail-import-button]' ).on( 'click', KWMDIE._import );
+			$( 'input[name=mailtpl-woomail-export-button]' ).on( 'click', mailtpl_import_export_settings._export );
+			$( 'input[name=mailtpl-woomail-import-button]' ).on( 'click', mailtpl_import_export_settings._import );
 		},
 	
 		_export: function() {
-			window.location.href = KWMDIEConfig.customizerURL + '&mailtpl-woomail-export=' + KWMDIEConfig.exportNonce;
+			window.location.href = email_templates_config.customizerURL + '&mailtpl-woomail-export=' + email_templates_config.exportNonce;
 		},
 	
 		_import: function() {
 
 			// Display confirmation prompt
-			var confirmation = confirm(KWMDIEl10n.confrim_override);
+			var confirmation = confirm(email_templates_l10n.confrim_override);
 
 			// Check user input
 			if ( ! confirmation ) {
@@ -180,7 +180,7 @@ jQuery(document).ready(function() {
 				message		= $( '.mailtpl-woomail-uploading' );
 			
 			if ( '' == file.val() ) {
-				alert( KWMDIEl10n.emptyImport );
+				alert( email_templates_l10n.emptyImport );
 			} else {
 				win.off( 'beforeunload' );
 				body.append( form );
@@ -191,21 +191,21 @@ jQuery(document).ready(function() {
 		}
 	};
 	
-	$( KWMDIE.init );
+	$( mailtpl_import_export_settings.init );
 	
 })( jQuery );
 
 ( function( $ ) {
 	
-	var KWMDTL = {
+	var mailtpl_import_export_templates = {
 	
 		init: function() {
-			$( 'input[name=mailtpl-woomail-template-button]' ).on( 'click', KWMDTL._import_template );
+			$( 'input[name=mailtpl-woomail-template-button]' ).on( 'click', mailtpl_import_export_templates._import_template );
 		},
 		_import_template: function() {
 
 			// Display confirmation prompt
-			var confirmation = confirm(KWMDIEl10n.confrim_override);
+			var confirmation = confirm(email_templates_l10n.confrim_override);
 
 			// Check user input
 			if ( ! confirmation ) {
@@ -225,6 +225,6 @@ jQuery(document).ready(function() {
 		}
 	};
 	
-	$( KWMDTL.init );
+	$( mailtpl_import_export_templates.init );
 	
 })( jQuery );

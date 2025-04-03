@@ -4,61 +4,112 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/emails/customer-new-account.php.
  *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates/Emails
- * @version     3.7.0
+ * @package Email Templates
  */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * NOTES ABOUT TEMPLATE EDIT FOR MAILTPL WOOMAIL Composer, 
- * 1. add hook 'Mailtpl_Woomailemail_text' to pull in main text
- * 2. Remove static main text area.
+ * Woocommerce email header.
+ *
+ * @hooked WC_Emails::email_header() Output the email header
+ *
+ * @param string $email_heading Email heading.
+ * @param object $email         Email object.
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 do_action( 'woocommerce_email_header', $email_heading, $email );
 
-$button_check    = Mailtpl_Woomail_Customizer::opt( 'customer_new_account_btn_switch' );
-$account_section = Mailtpl_Woomail_Customizer::opt( 'customer_new_account_account_section' );
+$button_check            = true; // @todo - add button to email template.
+$account_section         = true; // @todo - add account section to email template.
+$button_border_width     = mailtpl_get_options( 'button_border_width', '' );
+$button_border_style     = mailtpl_get_options( 'button_border_style', '' );
+$button_border_color     = mailtpl_get_options( 'button_border_color', '' );
+$padding_top_bottom      = mailtpl_get_options( 'button_padding_top_bottom', '' );
+$padding_left_right      = mailtpl_get_options( 'button_padding_left_right', '' );
+$button_text_color       = mailtpl_get_options( 'button_text_color', '' );
+$button_font_size        = mailtpl_get_options( 'button_font_size', '' );
+$button_background_color = mailtpl_get_options( 'button_background_color', '' );
+$button_border_radius    = mailtpl_get_options( 'button_border_radius', '' );
+$button_font_family      = mailtpl_get_options( 'button_font_family', '' );
+$button_font_weight      = mailtpl_get_options( 'button_font_weight', '' );
+$border                  = sprintf( '%1$spx %2$s %3$s', $button_border_width, $button_border_style, $button_border_color );
 
-/**
- * @hooked Mailtpl_Woomail_Composer::email_main_text_area_no_order
- */
-do_action( 'Mailtpl_Woomailemail_text', $email ); ?>
+do_action( 'mailtpl_woomailemail_text', $email );
 
-<?php if ( 'yes' === get_option( 'woocommerce_registration_generate_password' ) && $password_generated ) : ?>
-
-	<?php if ($set_password_url) { /** $set_password_url was introduced in WooCommerce 6.0 */ ?>
-		<p><a href="<?php echo esc_attr( $set_password_url ); ?>"><?php printf( esc_html__( 'Click here to set your new password.', 'woocommerce' ) ); ?></a></p>
-	<?php } else { ?>
-		<p><?php printf( __( 'Your password has been automatically generated: %s', 'woocommerce' ), '<strong>' . esc_html( $user_pass ) . '</strong>' ); ?></p>
-	<?php } ?>
-
-<?php
-endif;
-if ( true == $account_section ) {
-	if ( true == $button_check ) {
-		echo '<p>' . esc_html__( 'You can access your account area to view your orders and change your password.', 'woocommerce' ) . '</p>';
-		echo '<p class="btn-container"><a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="btn">' . esc_html__( 'View Account', 'woocommerce' ) . '</a></p>';
+if ( 'yes' === get_option( 'woocommerce_registration_generate_password' ) && $password_generated ) :
+	if ( $set_password_url ) {
+		?>
+		<p>
+			<a href="<?php echo esc_url( $set_password_url ); ?>"><?php esc_attr_e( 'Click here to set your new password.', 'woocommerce' ); ?></a>
+		</p>
+		<?php
 	} else {
-	?>
-	<p><?php printf( __( 'You can access your account area to view your orders and change your password here: %s.', 'woocommerce' ), make_clickable( esc_url( wc_get_page_permalink( 'myaccount' ) ) ) ); ?></p>
-	<?php
+		?>
+		<p>
+			<?php
+			printf(
+				wp_kses(
+					// translators: %s: auto generated password.
+					__( 'Your password has been automatically generated: %s', 'woocommerce' ),
+					array(
+						'strong' => array(),
+					),
+				),
+				'<strong>' . esc_html( $user_pass ) . '</strong>'
+			);
+			?>
+		</p>
+		<?php
+	}
+endif;
+
+if ( true === $account_section ) {
+	if ( true === $button_check ) {
+		?>
+		<p>
+			<?php esc_attr_e( 'You can access your account area to view your orders and change your password.', 'woocommerce' ); ?>
+		</p>
+		<p class="button-container" style="padding: <?php echo esc_attr( $padding_top_bottom ); ?>px <?php echo esc_attr( $padding_left_right ); ?>px;">
+			<a
+					href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"
+					class="btn"
+					style="
+						color:         <?php echo sanitize_hex_color( $button_text_color ); ?>!important;
+						font-size:     <?php echo esc_attr( $button_font_size ); ?>px;
+						background:    <?php echo sanitize_hex_color( $button_background_color ); ?>;
+						border-radius: <?php echo esc_attr( $button_border_radius ); ?>px;
+						border:        <?php echo esc_attr( $border ); ?>;
+						font-family:   <?php echo esc_attr( $button_font_family ); ?>;
+						font-weight:   <?php echo esc_attr( $button_font_weight ); ?>;
+						padding: <?php echo esc_attr( $padding_top_bottom ); ?>px <?php echo esc_attr( $padding_left_right ); ?>px;
+					"><?php esc_html_e( 'View Account', 'woocommerce' ); ?></a>
+		</p>
+		<?php
+	} else {
+		?>
+		<?php
+		printf(
+			wp_kses(
+				// translators: %s: My Account URL.
+				__( 'You can access your account area to view your orders and change your password here: %s', 'woocommerce' ),
+				array(
+					'a' => array(
+						'href' => array(),
+					),
+				)
+			),
+			wp_kses(
+				make_clickable(
+					esc_url( wc_get_page_permalink( 'myaccount' ) )
+				),
+				array( 'a' => array( 'href' => array() ) )
+			)
+		);
+		?>
+		<?php
 	}
 }
-/**
- * Show user-defined additonal content - this is set in each email's settings.
- */
+
 if ( isset( $additional_content ) && ! empty( $additional_content ) ) {
 	echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) );
 }

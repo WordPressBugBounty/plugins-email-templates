@@ -1944,6 +1944,11 @@ if ( ! class_exists( 'Mailtpl_Woomail_Settings' ) ) {
 							'normal'        => __( 'Normal', 'email-templates' ),
 							'light'         => __( 'Light', 'email-templates' ),
 						),
+						'selectors'     => array(
+							'.order-items-normal #body_content_inner .td' => array( 'border-style' ),
+							'.order-items-light #body_content_inner table.td .td' => array( 'border-bottom-style' ),
+							'.order-items-light #body_content_inner table.td' => array( 'border-top-style' ),
+						),
 					),
 					// Order ITEMS Image.
 					'order_items_image' => array(
@@ -2065,7 +2070,8 @@ if ( ! class_exists( 'Mailtpl_Woomail_Settings' ) ) {
 							'#body_content_inner .td'   => array( 'border-color' ),
 						),
 					),
-					// tems table border style
+					//uzair
+					// Items table border style
 					'items_table_border_style' => array(
 						'title'         => __( 'Border Style', 'email-templates' ),
 						'section'       => 'items_table',
@@ -2917,11 +2923,12 @@ To reset your password, visit the following address:',
 					'order_items_style'                                             => 'normal',
 					'order_items_image'                                             => 'normal',
 					'order_items_image_size'                                        => '100x50',
+					'order_image_image'                                        => 'normal',
 					'items_table_border_width'                                      => '1',
 					'items_table_border_color'                                      => '#e4e4e4',
-					'items_table_border_style'                                      => 'solid',
-					'items_table_background_color'                                  => '',
-					'items_table_background_odd_color'                              => '',
+					'items_table_border_style' 										=> 'solid',
+					'items_table_background_color'                                  => '#ffffff',
+					'items_table_background_odd_color'                              => '#ffffff',
 					'items_table_padding'                                           => '12',
 					'order_heading_style'                                           => 'normal',
 					'notes_outside_table'                                           => false,
@@ -2955,7 +2962,6 @@ To reset your password, visit the following address:',
 					'footer_credit_bottom_padding'                                  => '0',
 					'footer_credit_top_padding'                                     => '0',
 					'items_table_border_width'                                      => '1',
-					'items_table_border_color'                                      => '#e4e4e4',
 					'footer_content_text'                                           => get_option( 'woocommerce_email_footer_text', '' ),
 					'email_recipient'                                               => get_option( 'admin_email' ),
 					'customer_ekomi_heading'                                        => _x( 'Please rate your Order', 'ekomi', 'email-templates' ),
