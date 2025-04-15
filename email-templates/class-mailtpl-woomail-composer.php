@@ -53,7 +53,7 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 		}
 
         public function upgrade_notice( $plugin ) {
-            if ( version_compare( '1.5', MAILTPL_VERSION, '>' ) ) {
+            if ( version_compare( '1.5.1', MAILTPL_VERSION, '>' ) ) {
                 echo '<br><b>' . esc_attr__( 'Please note that the latest update of our WordPress plugin has inherited WooCommerce customizer settings into the WordPress customizer.<br>
                 However, we would like to bring to your attention that any custom email styles you may have set up in WooCommerce could be lost due to this update.<br>
                 We recommend that you take note of any customizations you have made to your WooCommerce email styles before updating the plugin.<br>
