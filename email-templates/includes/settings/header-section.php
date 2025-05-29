@@ -278,10 +278,10 @@ $wp_customize->add_control(
 
 // background color.
 $wp_customize->add_setting(
-	'mailtpl_opts[mailtpl_header_text_bg]',
+	'mailtpl_opts[header_bg]',
 	array(
 		'type'                 => 'option',
-		'default'              => mailtpl_get_options( 'mailtpl_header_text_bg', $this->defaults['header_bg'] ),
+		'default'              => mailtpl_get_options( 'header_bg', $this->defaults['header_bg'] ),
 		'transport'            => 'postMessage',
 		'capability'           => 'edit_theme_options',
 		'sanitize_callback'    => 'sanitize_hex_color',
@@ -291,11 +291,11 @@ $wp_customize->add_setting(
 $wp_customize->add_control(
 	new WP_Customize_Color_Control(
 		$wp_customize,
-		'mailtpl_header_text_bg',
+		'header_bg',
 		array(
 			'label'       => __( 'Background Color', 'email-templates' ),
 			'section'     => 'section_mailtpl_header',
-			'settings'    => 'mailtpl_opts[mailtpl_header_text_bg]',
+			'settings'    => 'mailtpl_opts[header_bg]',
 			'description' => __( 'Choose header background color', 'email-templates' ),
 		)
 	)

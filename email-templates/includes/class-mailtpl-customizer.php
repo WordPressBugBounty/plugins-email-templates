@@ -130,13 +130,16 @@ class Mailtpl_Customizer {
 				'panel' => 'mailtpl',
 			)
 		);
-		$wp_customize->add_section(
-			'section_mailtpl_test',
-			array(
-				'title' => __( 'Send Test Email', 'email-templates' ),
-				'panel' => 'mailtpl',
-			)
-		);
+		if( class_exists('WooCommerce') ){
+			$wp_customize->add_section(
+				'section_mailtpl_test',
+				array(
+					'title' => __( 'Send Test Email', 'email-templates' ),
+					'panel' => 'mailtpl',
+				)
+			);
+		}
+	
 		// Populate sections.
 		$this->section_mailtpl_email_type( $wp_customize );
 		$this->settings_section( $wp_customize );
@@ -267,6 +270,11 @@ class Mailtpl_Customizer {
 	 * @return string
 	 */
 	public function capture_customizer_page( $template ) {
+		// If WooCommerce is not active, force is_woo_mail=false
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			$_GET['is_woo_mail'] = 'false';
+		}
+	
 		if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'open-email-template' ) ) {
 			if ( is_customize_preview() && isset( $_GET['mailtpl_display'] ) && ( 'true' === $_GET['mailtpl_display'] || true === $_GET['mailtpl_display'] ) ) {
 				if ( isset( $_GET['is_woo_mail'] ) && 'false' === sanitize_text_field( wp_unslash( $_GET['is_woo_mail'] ) ) ) {
@@ -278,6 +286,7 @@ class Mailtpl_Customizer {
 		}
 		return $template;
 	}
+	
 
 	/**
 	 * Register the JavaScript for the admin area.

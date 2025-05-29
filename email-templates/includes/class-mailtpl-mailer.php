@@ -34,6 +34,15 @@ if ( ! class_exists( 'Mailtpl_Mailer' ) ) {
 		 */
 		private $version;
 
+		/**
+		 * dynamic property
+		 *
+		 * @since    1.0.0
+		 * @access   private
+		 * @var      mixed  
+		 */
+		private $opts;
+
 
 		/**
 		 * Initialize the class and set its properties.
@@ -126,16 +135,29 @@ if ( ! class_exists( 'Mailtpl_Mailer' ) ) {
 					$email_type    = sanitize_text_field( wp_unslash( $_POST['email_type'] ) );
 					$preview_order = isset( $_POST['preview_order'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_order'] ) ) : '';
 
-					$content = Mailtpl_Woomail_Preview::get_preview_email( true, get_bloginfo( 'admin_email' ), $email_type, $preview_order, );
-					if ( $content ) {
-						wp_send_json_success(
+					if ( class_exists( 'Mailtpl_Woomail_Preview' ) ) {
+						$content = Mailtpl_Woomail_Preview::get_preview_email( true, get_bloginfo( 'admin_email' ), $email_type, $preview_order );
+					
+						if ( $content ) {
+							wp_send_json_success(
+								array(
+									'email_sanded' => 'true',
+									'message'      => __( 'Email sent successfully', 'email-templates' ),
+								),
+								200
+							);
+						}
+					} else {
+						// Optional: respond with failure if class doesn't exist
+						wp_send_json_error(
 							array(
-								'email_sanded' => 'true',
-								'message'      => __( 'Email sent successfully', 'email-templates' ),
+								'email_sanded' => 'false',
+								'message'      => __( 'Mailtpl_Woomail_Preview class not found. Email not sent.', 'email-templates' ),
 							),
-							200
+							400
 						);
 					}
+					
 				}
 			}
 		}

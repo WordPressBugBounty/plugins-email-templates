@@ -293,7 +293,7 @@ if ( ! function_exists( 'mailtpl_get_default_options' ) ) {
 			'header_image_padding_top_bottom' => '0',
 			'header_image_alignment'          => 'center',
 			'header_text_aligment'            => 'center',
-			'mailtpl_header_text_bg'          => '#454545',
+			'header_bg'          => '#454545',
 			'header_text_padding_top'         => '15',
 			'header_text_padding_left_right'  => '15',
 			'header_text_padding_bottom'      => '15',

@@ -29,18 +29,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<title><?php echo esc_attr__( 'Email Composer', 'email-templates' ); ?></title>
 
-		<style type="text/css" id="Mailtpl_Woomailcustom_css"><?php echo esc_attr( Mailtpl_Woomail_Customizer::opt( 'custom_css' ) ); ?>.woocommerce-store-notice.demo_store, .mfp-hide {display: none;}</style>
+		<?php if ( class_exists( 'WooCommerce' ) && class_exists( 'Mailtpl_Woomail_Customizer' ) ) : ?>
+    <style type="text/css" id="Mailtpl_Woomailcustom_css">
+        <?php echo esc_attr( Mailtpl_Woomail_Customizer::opt( 'custom_css' ) ); ?> 
+        .woocommerce-store-notice.demo_store, .mfp-hide {display: none;}
+    </style>
+<?php endif; ?>
 
 	</head>
 
 	<body>
-
-		<div id="mailtpl_woomail_preview_wrapper" style="display: block;">
-
-			<?php Mailtpl_Woomail_Preview::print_preview_email(); ?>
-
-		</div>
-
+	<?php if ( class_exists( 'WooCommerce' ) && class_exists( 'Mailtpl_Woomail_Preview' ) ) : ?>	
+	<div id="mailtpl_woomail_preview_wrapper" style="display: block;">
+		<?php Mailtpl_Woomail_Preview::print_preview_email(); ?>
+	</div>
+<?php endif; ?>
 		<?php
 		do_action( 'woomail_footer' );
 		wp_footer();

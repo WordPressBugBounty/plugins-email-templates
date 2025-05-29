@@ -32,7 +32,7 @@ $img                       = mailtpl_get_options( 'header_logo', '' );
 $header_text_align         = mailtpl_get_options( 'header_text_aligment', 'center' );
 $header_title_font_size    = mailtpl_get_options( 'header_text_size', '30' );
 
-$heading_background_color  = mailtpl_get_options( 'mailtpl_header_text_bg', '#454545' );
+$heading_background_color  = mailtpl_get_options( 'header_bg', '#454545' );
 $heading_color             = mailtpl_get_options( 'header_text_color', '#f1f1f1' );
 $header_padding_top        = mailtpl_get_options( 'header_text_padding_top', '15' );
 $header_padding_bottom     = mailtpl_get_options( 'header_text_padding_bottom', '15' );

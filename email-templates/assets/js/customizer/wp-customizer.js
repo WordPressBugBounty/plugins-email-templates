@@ -274,7 +274,7 @@
         } );
     } );
 
-    mailtpl_settings_customizer( 'mailtpl_header_text_bg', function( to ) {
+    mailtpl_settings_customizer( 'header_bg', function( to ) {
         $( '#template_header_logo_text, #header_wrapper' ).css( 'background-color', to );
     } );
 

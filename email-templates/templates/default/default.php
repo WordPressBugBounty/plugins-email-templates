@@ -48,7 +48,7 @@ color: ' . $settings['header_text_color'] . ';
 ';
 $template_header_logo_text_container = '
 text-align: ' . $settings['header_text_aligment'] . ';
-background: ' . $settings['mailtpl_header_text_bg'] . ';
+background: ' . $settings['header_bg'] . ';
 padding: ' . $settings['header_text_padding_top'] . 'px ' . $settings['header_text_padding_left_right'] . 'px ' . $settings['header_text_padding_bottom'] . 'px ' . $settings['header_text_padding_left_right'] . 'px;
 ';
 

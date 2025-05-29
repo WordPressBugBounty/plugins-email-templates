@@ -3,7 +3,7 @@ Contributors: wpexpertsio
 Tags: Email templates, email designer, email customizer, email, woocommerce email
 Requires at least: 7.4
 Tested up to: 6.8
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,8 +154,8 @@ The numbers were not appearing on the slider in the **Button Font Size** option 
 
 Copy the templates folder into your theme, then in functions.php add the following:
 
-`add_filter('mailtpl/customizer_template', function(){
-    return get_stylesheet_directory() . '/admin/templates/default.php';
+`add_filter('mailtpl_customizer_template', function($default_template_path){
+    return get_stylesheet_directory() . '/email/templates/default.php';
 });`
 
 == Screenshots ==
@@ -169,6 +169,9 @@ Copy the templates folder into your theme, then in functions.php add the followi
 7. Font Family
 
 == Changelog ==
+
+= 1.5.3 =
+* Fix - Minor bug fixes
 
 = 1.5.2 =
 * Tweak - Update plugin header
