@@ -9,6 +9,59 @@ defined( 'ABSPATH' ) || exit;
 
 do_action( 'mailtpl_sections_body_before_content', $wp_customize );
 
+// Body Text.
+function get_customized_email_types() {
+	$types = array(
+		'new_order'                 => __( 'New Order', 'email-templates' ),
+		'cancelled_order'           => __( 'Cancelled Order', 'email-templates' ),
+		'customer_processing_order' => __( 'Customer Processing Order', 'email-templates' ),
+		'customer_completed_order'  => __( 'Customer Completed Order', 'email-templates' ),
+		'customer_refunded_order'   => __( 'Customer Refunded Order', 'email-templates' ),
+		'customer_on_hold_order'    => __( 'Customer On Hold Order', 'email-templates' ),
+		'customer_invoice'          => __( 'Customer Invoice', 'email-templates' ),
+		'failed_order'              => __( 'Failed Order', 'email-templates' ),
+		'customer_new_account'      => __( 'Customer New Account', 'email-templates' ),
+		'customer_note'             => __( 'Customer Note', 'email-templates' ),
+		'customer_reset_password'   => __( 'Customer Reset Password', 'email-templates' ),
+	);
+
+	return $types;
+}
+
+// Check if WooCommerce is active before attempting to use WooCommerce-specific classes
+if (class_exists('WooCommerce') && class_exists('Mailtpl_Woomail_Settings')) {
+    foreach (get_customized_email_types() as $key => $value) {
+        $wp_customize->add_setting(
+            new WP_Customize_Setting(
+                $wp_customize,
+                'mailtpl_woomail[' . $key . '_body]',
+                array(
+                    'type'          => 'option',
+                    'transport'     => 'refresh',
+                    'default'       => Mailtpl_Woomail_Settings::get_default_value($key . '_body'),
+                )
+            )
+        );
+
+        if (isset($_GET['email_type']) && !empty($_GET['email_type']) && ($_GET['email_type'] == $key)) {
+            $wp_customize->add_control(
+                new WP_Customize_Control(
+                    $wp_customize,
+                    'mailtpl_woomail[' . $key . '_body]',
+                    array(
+                        'label'             => __('Body Text', 'email-templates'),
+                        'description'       => __('Write a custom body text', 'email-templates'),
+                        'settings'          => 'mailtpl_woomail[' . $key . '_body]',
+                        'priority'          => 10,
+                        'section'           => 'section_mailtpl_body',
+                        'type'              => 'textarea',
+                    )
+                )
+            );
+        }
+    }
+}
+
 // background color.
 $wp_customize->add_setting(
 	'mailtpl_opts[email_body_bg]',
