@@ -31,6 +31,10 @@ function get_customized_email_types() {
 // Check if WooCommerce is active before attempting to use WooCommerce-specific classes
 if (class_exists('WooCommerce') && class_exists('Mailtpl_Woomail_Settings')) {
     foreach (get_customized_email_types() as $key => $value) {
+        // Skip generic body control for customer_refunded_order as it has separate full and partial controls
+        if ($key === 'customer_refunded_order') {
+            continue;
+        }
         $wp_customize->add_setting(
             new WP_Customize_Setting(
                 $wp_customize,
@@ -59,6 +63,62 @@ if (class_exists('WooCommerce') && class_exists('Mailtpl_Woomail_Settings')) {
                 )
             );
         }
+    }
+
+    // Special handling for customer_refunded_order with separate full and partial body controls
+    $key = 'customer_refunded_order';
+    $wp_customize->add_setting(
+        new WP_Customize_Setting(
+            $wp_customize,
+            'mailtpl_woomail[' . $key . '_body_full]',
+            array(
+                'type'          => 'option',
+                'transport'     => 'refresh',
+                'default'       => Mailtpl_Woomail_Settings::get_default_value($key . '_body_full'),
+            )
+        )
+    );
+    $wp_customize->add_setting(
+        new WP_Customize_Setting(
+            $wp_customize,
+            'mailtpl_woomail[' . $key . '_body_partial]',
+            array(
+                'type'          => 'option',
+                'transport'     => 'refresh',
+                'default'       => Mailtpl_Woomail_Settings::get_default_value($key . '_body_partial'),
+            )
+        )
+    );
+
+    if (isset($_GET['email_type']) && !empty($_GET['email_type']) && ($_GET['email_type'] == $key)) {
+        $wp_customize->add_control(
+            new WP_Customize_Control(
+                $wp_customize,
+                'mailtpl_woomail[' . $key . '_body_full]',
+                array(
+                    'label'             => __('Full Refund Body Text', 'email-templates'),
+                    'description'       => __('Write a custom body text for full refunds', 'email-templates'),
+                    'settings'          => 'mailtpl_woomail[' . $key . '_body_full]',
+                    'priority'          => 10,
+                    'section'           => 'section_mailtpl_body',
+                    'type'              => 'textarea',
+                )
+            )
+        );
+        $wp_customize->add_control(
+            new WP_Customize_Control(
+                $wp_customize,
+                'mailtpl_woomail[' . $key . '_body_partial]',
+                array(
+                    'label'             => __('Partial Refund Body Text', 'email-templates'),
+                    'description'       => __('Write a custom body text for partial refunds', 'email-templates'),
+                    'settings'          => 'mailtpl_woomail[' . $key . '_body_partial]',
+                    'priority'          => 11,
+                    'section'           => 'section_mailtpl_body',
+                    'type'              => 'textarea',
+                )
+            )
+        );
     }
 }
 

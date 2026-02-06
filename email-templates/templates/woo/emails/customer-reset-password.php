@@ -49,7 +49,7 @@ if ( true === $button_check ) { ?>
 					font-family:   <?php echo esc_attr( $button_font_family ); ?>;
 					font-weight:   <?php echo esc_attr( $button_font_weight ); ?>;
 					padding:       <?php echo esc_attr( $button_padding_top_bottom ); ?>px <?php echo esc_attr( $button_padding_left_right ); ?>px;
-				"><?php esc_html_e( 'Reset Password', 'woocommerce' ); ?></a>
+				"><?php esc_html_e( 'Reset your password', 'woocommerce' ); ?></a>
 	</p>
 	<?php
 } else {

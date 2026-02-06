@@ -67,7 +67,7 @@ if ( true === $account_section ) {
 	if ( true === $button_check ) {
 		?>
 		<p>
-			<?php esc_attr_e( 'You can access your account area to view your orders and change your password.', 'woocommerce' ); ?>
+			<?php esc_attr_e( 'You can access your account area to view orders, change your password, and more via the link below:', 'woocommerce' ); ?>
 		</p>
 		<p class="button-container" style="padding: <?php echo esc_attr( $padding_top_bottom ); ?>px <?php echo esc_attr( $padding_left_right ); ?>px;">
 			<a
@@ -82,7 +82,7 @@ if ( true === $account_section ) {
 						font-family:   <?php echo esc_attr( $button_font_family ); ?>;
 						font-weight:   <?php echo esc_attr( $button_font_weight ); ?>;
 						padding: <?php echo esc_attr( $padding_top_bottom ); ?>px <?php echo esc_attr( $padding_left_right ); ?>px;
-					"><?php esc_html_e( 'View Account', 'woocommerce' ); ?></a>
+					"><?php esc_html_e( 'My account', 'woocommerce' ); ?></a>
 		</p>
 		<?php
 	} else {
@@ -91,7 +91,7 @@ if ( true === $account_section ) {
 		printf(
 			wp_kses(
 				// translators: %s: My Account URL.
-				__( 'You can access your account area to view your orders and change your password here: %s', 'woocommerce' ),
+				__( 'You can access your account area to view orders, change your password, and more at: %s', 'woocommerce' ),
 				array(
 					'a' => array(
 						'href' => array(),

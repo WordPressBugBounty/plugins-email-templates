@@ -2,8 +2,8 @@
 Contributors: wpexpertsio
 Tags: Email templates, email designer, email customizer, email, woocommerce email
 Requires at least: 7.4
-Tested up to: 6.8
-Stable tag: 1.5.4
+Tested up to: 6.9
+Stable tag: 1.5.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -169,6 +169,28 @@ Copy the templates folder into your theme, then in functions.php add the followi
 7. Font Family
 
 == Changelog ==
+
+= 1.5.11 =
+Fixed - Minor bug fixes.
+
+= 1.5.10 =
+Fixed: Default template override.
+Fixed - Minor bug fixes.
+
+= 1.5.9 =
+Fixed: Double HTML Wrapper When Using Elementor Forms.
+
+= 1.5.8 =
+Fixed: Updated WooCommerce Refunded order email template strings to match latest core changes.
+
+= 1.5.7 =
+Fixed: Updated WooCommerce email template strings to match latest core changes.
+
+= 1.5.6 =
+* Removed Admin Notice
+
+= 1.5.5 =
+* Added Recommendation
 
 = 1.5.4 =
 * Added - Body text field in woocommerce templates.

@@ -8,7 +8,7 @@
  * @author wpexpert
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
-$border_radius = $settings['template'] == 'boxed' ? '6px' : '0px';
+$border_radius = $settings['template'] == 'boxed' ? $settings['template_border_radius'] . 'px' : '0px';
 $template_footer = "
 	border-top:1px solid #E2E2E2;
 	background: ".$settings['footer_bg'].";

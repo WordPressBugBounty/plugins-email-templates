@@ -72,6 +72,26 @@ if ( ! class_exists( 'Mailtpl_Admin' ) ) {
 			);
 		}
 
+
+		
+		public function init_smtp_recommendation() {
+			if ( ! class_exists( 'Recommend_Post_SMTP_Admin_Notice' ) ) {
+				require_once MAILTPL_PLUGIN_DIR . 'admin/post-smtp-notice/recommend-post-smtp-admin-notice.php';
+				$recommend_smtp_admin_notice = Recommend_Post_SMTP_Admin_Notice::get_instance();
+				$recommend_smtp_admin_notice->set_plugin_info( 'email-templates', 'gif' );
+			}
+			require_once MAILTPL_PLUGIN_DIR . 'admin/post-smtp-notice/recommend-post-smtp-loader.php';
+	
+			// Unique ID per plugin (slug, name, etc.)
+			$recommend_smtp = recommend_smtp_loader(
+				'email-template',     // unique plugin ID
+				'email-templates',   // your plugin slug
+				true,            // show admin notice
+				'email-template',           // parent menu
+				'gif'            // logo format
+			);
+		}
+
 		/**
 		 * If we are in our template strip everything out and leave it clean
 		 *

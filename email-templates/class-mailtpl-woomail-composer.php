@@ -51,7 +51,6 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 			add_action( 'plugins_loaded', array( $this, 'on_plugins_loaded_woomail' ) );
             add_action( 'in_plugin_update_message-' . plugin_basename( MAILTPL_PLUGIN_FILE ), array( $this, 'upgrade_notice' ) );
 		}
-
         public function upgrade_notice( $plugin ) {
             if ( version_compare( '1.5.4', MAILTPL_VERSION, '>' ) ) {
                 echo '<br><b>' . esc_attr__( 'Please note that the latest update of our WordPress plugin has inherited WooCommerce customizer settings into the WordPress customizer.<br>

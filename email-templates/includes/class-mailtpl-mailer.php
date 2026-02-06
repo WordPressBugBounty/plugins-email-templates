@@ -85,8 +85,43 @@ if ( ! class_exists( 'Mailtpl_Mailer' ) ) {
 		public function send_email( $args ) {
 
 			do_action( 'mailtpl_send_email', $args, $this );
-			$temp_message    = $this->add_template( apply_filters( 'mailtpl_email_content', $args['message'] ) );
-			$user_email      = isset( $args['to'] ) ? $args['to'] : get_option( 'admin_email' );
+
+			if ( empty( $args['message'] ) ) {
+				return $args;
+			}
+
+			// Detect full HTML emails (Elementor, builders, etc.)
+			$has_full_html = stripos( $args['message'], '<html' ) !== false;
+
+			$user_email = isset( $args['to'] ) ? $args['to'] : get_option( 'admin_email' );
+
+			$skip_template = false;
+			if ( $has_full_html ) {
+				// Check backtrace for Elementor to skip template application
+				$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+				foreach ( $backtrace as $trace ) {
+					if ( isset( $trace['file'] ) && strpos( $trace['file'], 'elementor' ) !== false ) {
+						$skip_template = true;
+						break;
+					}
+				}
+			}
+
+			if ( $skip_template ) {
+				// Elementor already outputs complete HTML – skip Email Templates wrapper
+				$args['message'] = $this->replace_placeholders(
+					$args['message'],
+					$user_email
+				);
+
+				return $args;
+			}
+
+			// Normal behavior for WP system / plain emails or MemberPress
+			$temp_message = $this->add_template(
+				apply_filters( 'mailtpl_email_content', $args['message'] )
+			);
+
 			$args['message'] = $this->replace_placeholders( $temp_message, $user_email );
 
 			return $args;

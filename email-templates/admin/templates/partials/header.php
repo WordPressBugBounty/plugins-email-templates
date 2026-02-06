@@ -17,14 +17,13 @@ $wrapper = "
 	margin:0;
 	padding: 70px 0 70px 0;
 ";
-$border_radius = $settings['template'] == 'boxed' ? '6px' : '0px';
+$border_radius = $settings['template'] == 'boxed' ? $settings['template_border_radius'] . 'px' : '0px';
 $template_container = "
 	-webkit-box-shadow:0 0 0 3px rgba(0,0,0,0.025) !important;
 	box-shadow:0 0 0 3px rgba(0,0,0,0.025) !important;
 	-webkit-border-radius:$border_radius !important;
 	border-radius:$border_radius !important;
-	background-color: #fafafa;
-	border-radius:6px !important;
+	background-color: ".$settings['header_bg'].";
 	width: 100%;
 	max-width: ". ($settings['template'] == 'boxed' ? $settings['body_size'].'px' : '100%') .";";
 $template_header = "

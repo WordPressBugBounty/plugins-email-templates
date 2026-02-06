@@ -199,8 +199,9 @@ if ( ! class_exists( 'Mailtpl' ) ) {
 			$this->admin      = new Mailtpl_Admin( $this->get_plugin_name(), $this->get_version() );
 			$this->customizer = new Mailtpl_Customizer( $this->get_plugin_name(), $this->get_version() );
 			$this->mailer     = new Mailtpl_Mailer( $this->get_plugin_name(), $this->get_version() );
-
+			// Initialize Post SMTP recommendation
 			$this->loader->add_action( 'admin_menu', $this->admin, 'add_menu_link' );
+			$this->loader->add_action( 'admin_menu', $this->admin, 'init_smtp_recommendation' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'wp_pointers', 1000 );
 			$this->loader->add_action( 'mailtpl_admin_pointers_plugins', $this->admin, 'add_wp_pointer' );
 			$this->loader->add_action( 'mailtpl_admin_pointers_dashboard', $this->admin, 'add_wp_pointer' );
