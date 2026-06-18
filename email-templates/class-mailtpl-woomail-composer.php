@@ -34,6 +34,13 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 		private static $overwrite_options = null;
 
 		/**
+		 * Whether WooCommerce email hooks are disabled for the currently-rendering email.
+		 *
+		 * @var bool
+		 */
+		private $woo_email_disabled = false;
+
+		/**
 		 * Instance Control
 		 */
 		public static function get_instance() {
@@ -97,10 +104,22 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 		 */
 		public function on_init() {
 			if ( mailtpl_dedicated_for_woocommerce_active( 'is_settings' ) || is_customize_preview() ) {
-				if ( function_exists( 'WC' ) ) {
-					remove_action( 'woocommerce_email_header', array( WC()->mailer(), 'email_header' ) );
-				}
+				// Remove WC's default email header lazily (at send time, priority 0) instead of
+				// calling WC()->mailer() here. Calling it early forces WC to instantiate and lock
+				// in all registered email classes before third-party plugins (e.g. Tribe/TEC) have
+				// had a chance to register theirs, breaking their email delivery entirely.
+				add_action(
+					'woocommerce_email_header',
+					function() {
+						if ( function_exists( 'WC' ) && WC()->mailer() ) {
+							remove_action( 'woocommerce_email_header', array( WC()->mailer(), 'email_header' ) );
+						}
+					},
+					0
+				);
 
+				add_action( 'woocommerce_email_header', array( $this, 'maybe_disable_woo_for_email' ), 1, 2 );
+				add_action( 'woocommerce_email_footer', array( $this, 'reset_woo_email_disabled' ), 1 );
 				add_action( 'woocommerce_email_header', array( $this, 'add_email_header' ), 20, 2 );
 				add_filter( 'woocommerce_locate_template', array( $this, 'filter_locate_template' ), 10, 3 );
 				add_filter( 'woocommerce_email_format_string', array( $this, 'add_extra_placeholders' ), 20, 2 );
@@ -112,6 +131,43 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 				add_filter( 'woocommerce_email_setup_locale', array( $this, 'switch_to_site_locale' ) );
 				add_filter( 'woocommerce_email_restore_locale', array( $this, 'restore_to_user_locale' ) );
 			}
+		}
+
+		/**
+		 * Detect whether the current WooCommerce email should be skipped by this plugin.
+		 *
+		 * Fires at priority 1 on woocommerce_email_header, before the plugin's own
+		 * header (priority 20) and before any templates are located.
+		 *
+		 * Users can hook mailtpl_disable_woo_for_email to opt out for specific emails:
+		 *
+		 *   add_filter( 'mailtpl_disable_woo_for_email', function( $disabled, $email ) {
+		 *       if ( $email && strpos( get_class( $email ), 'Tribe' ) !== false ) {
+		 *           return true;
+		 *       }
+		 *       return $disabled;
+		 *   }, 10, 2 );
+		 *
+		 * @param string    $email_heading The email heading text.
+		 * @param \WC_Email $email         The WooCommerce email object.
+		 */
+		public function maybe_disable_woo_for_email( $email_heading, $email ) {
+			$this->woo_email_disabled = (bool) apply_filters( 'mailtpl_disable_woo_for_email', false, $email );
+
+			if ( $this->woo_email_disabled && function_exists( 'WC' ) && WC()->mailer() ) {
+				// Restore WooCommerce's original header since we removed it in on_init().
+				add_action( 'woocommerce_email_header', array( WC()->mailer(), 'email_header' ), 10, 2 );
+			}
+		}
+
+		/**
+		 * Reset the per-email disabled flag after each email finishes rendering.
+		 */
+		public function reset_woo_email_disabled() {
+			if ( $this->woo_email_disabled && function_exists( 'WC' ) && WC()->mailer() ) {
+				remove_action( 'woocommerce_email_header', array( WC()->mailer(), 'email_header' ), 10, 2 );
+			}
+			$this->woo_email_disabled = false;
 		}
 
 		/**
@@ -636,6 +692,10 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 		 * @return void
 		 */
 		public function add_email_header( $email_heading, $email = '' ) {
+			if ( $this->woo_email_disabled ) {
+				return;
+			}
+
 			wc_get_template(
 				'emails/email-header.php',
 				array(
@@ -655,6 +715,10 @@ if ( ! class_exists( 'Mailtpl_Woomail_Composer' ) ) {
 		 * @return string
 		 */
 		public function filter_locate_template( $template, $template_name, $template_path ) {
+			if ( $this->woo_email_disabled ) {
+				return $template;
+			}
+
 			// Make sure we are working with an email template.
 			if ( ! in_array( 'emails', explode( '/', $template_name ), true ) ) {
 				return $template;

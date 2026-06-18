@@ -90,6 +90,20 @@ if ( ! class_exists( 'Mailtpl_Mailer' ) ) {
 				return $args;
 			}
 
+			// Skip if this email was already processed by Profile Builder handler
+			if ( isset( $args['_mailtpl_pb_processed'] ) ) {
+				return $args;
+			}
+
+			/**
+			 * Filter to disable Email Templates for specific emails.
+			 * @param bool  $disabled Whether to disable Email Templates. Default false.
+			 * @param array $args The email arguments (to, subject, message, headers, attachments).
+			 */
+			if ( apply_filters( 'mailtpl_disable_for_email', false, $args ) ) {
+				return $args;
+			}
+
 			// Detect full HTML emails (Elementor, builders, etc.)
 			$has_full_html = stripos( $args['message'], '<html' ) !== false;
 
@@ -97,12 +111,19 @@ if ( ! class_exists( 'Mailtpl_Mailer' ) ) {
 
 			$skip_template = false;
 			if ( $has_full_html ) {
-				// Check backtrace for Elementor to skip template application
-				$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+				// Check backtrace for plugins that build their own complete HTML emails
+				// (e.g. Elementor, FluentCRM) to avoid double-wrapping.
+				$skip_plugins = apply_filters( 'mailtpl_skip_template_plugins', array( 'elementor', 'fluent-crm', 'fluentcrm' ) );
+				$backtrace    = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
 				foreach ( $backtrace as $trace ) {
-					if ( isset( $trace['file'] ) && strpos( $trace['file'], 'elementor' ) !== false ) {
-						$skip_template = true;
-						break;
+					if ( ! isset( $trace['file'] ) ) {
+						continue;
+					}
+					foreach ( $skip_plugins as $plugin_slug ) {
+						if ( strpos( $trace['file'], $plugin_slug ) !== false ) {
+							$skip_template = true;
+							break 2;
+						}
 					}
 				}
 			}
@@ -126,6 +147,68 @@ if ( ! class_exists( 'Mailtpl_Mailer' ) ) {
 
 			return $args;
 		}
+
+		/**
+		 * Track Profile Builder processed emails
+		 * 
+		 * @var array
+		 */
+		private static $pb_processed_emails = array();
+		/**
+		 * Handle Profile Builder emails using their wppb_mail filter
+		 *
+		 * @param array $atts Email attributes from Profile Builder
+		 * @param string $context Profile Builder email context
+		 * @return array Modified email attributes
+		 * @since 1.0.0
+		 */
+		public function handle_profile_builder_mail( $atts, $context = null ) {
+			if ( ! is_array( $atts ) || empty( $atts['message'] ) ) {
+				return $atts;
+			}
+			$user_email = isset( $atts['to'] ) ? $atts['to'] : get_option( 'admin_email' );
+			// Check if message has full HTML wrapper from Profile Builder
+			$has_full_html = stripos( $atts['message'], '<html' ) !== false;
+			if ( $has_full_html ) {
+				// Extract the content from Profile Builder's HTML wrapper
+				$body_content = $atts['message'];
+				// Remove the HTML wrapper that Profile Builder added
+				$body_content = preg_replace('/<html[^>]*>.*?<body[^>]*>/is', '', $body_content);
+				$body_content = preg_replace('/<\/body>.*?<\/html>/is', '', $body_content);
+				$body_content = trim( $body_content );
+			} else {
+				$body_content = $atts['message'];
+			}
+			// Apply Email Templates
+			$temp_message = $this->add_template(
+				apply_filters( 'mailtpl_email_content', $body_content )
+			);
+			$atts['message'] = $this->replace_placeholders( $temp_message, $user_email );
+			// Mark this email as processed by Profile Builder to prevent double processing
+			$email_hash = md5( $atts['to'] . $atts['subject'] . $atts['message'] );
+			self::$pb_processed_emails[ $email_hash ] = true;
+			// Also add a temporary filter to mark wp_mail args
+			add_filter( 'wp_mail', array( $this, 'mark_profile_builder_email' ), 1 );
+			return $atts;
+		}
+		/**
+		 * Mark wp_mail arguments as Profile Builder processed
+		 *
+		 * @param array $args wp_mail arguments
+		 * @return array Modified arguments
+		 */
+		public function mark_profile_builder_email( $args ) {
+			// Check if this matches a Profile Builder processed email
+			$email_hash = md5( $args['to'] . $args['subject'] . $args['message'] );
+			if ( isset( self::$pb_processed_emails[ $email_hash ] ) ) {
+				$args['_mailtpl_pb_processed'] = true;
+				// Remove this email from our tracking and remove the filter
+				unset( self::$pb_processed_emails[ $email_hash ] );
+				remove_filter( 'wp_mail', array( $this, 'mark_profile_builder_email' ), 1 );
+			}
+			return $args;
+		}
+
 
 		/**
 		 * Add content filters

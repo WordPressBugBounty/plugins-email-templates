@@ -96,9 +96,14 @@ $header_content_h1_a = "
 
 		                                            	$attrs = apply_filters( 'mailtpl/templates/header_logo_attr', array('style' => 'max-width:100%;'));
 
+														if ( isset( $settings['image_width_control'] ) && ! empty( $settings['image_width_control'] ) ) {
+															$attrs['style'] .= ' width: ' . esc_attr( $settings['image_width_control'] ) . 'px;';
+															$attrs['width'] = esc_attr( $settings['image_width_control'] );
+														}
+
 		                                            	$header_logo_attr = [];
 		                                            	foreach($attrs as $attr_key => $attr_value)
-		                                            		$header_logo_attr[] = sanitize_key($attr_key).'='.sanitize_text_field($attr_value);
+		                                            		$header_logo_attr[] = sanitize_key($attr_key).'="'.sanitize_text_field($attr_value).'"';
 
 			                                            echo '<img '.implode(' ', $header_logo_attr).' src="'.apply_filters( 'mailtpl/templates/header_logo', $settings['header_logo'] ).'" alt="'. apply_filters( 'mailtpl/templates/header_logo_alt', !empty($settings['header_logo_text']) ? do_shortcode( strip_tags($settings['header_logo_text']) ) : get_bloginfo( 'description' ) ) .'"/>';
 		                                            } elseif ( !empty( $settings['header_logo_text'] ) ) {

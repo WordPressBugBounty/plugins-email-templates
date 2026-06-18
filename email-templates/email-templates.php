@@ -10,7 +10,7 @@
  * Plugin Name:       Email Templates
  * Plugin URI:        http://wordpress.org/plugins/email-templates
  * Description:       Beautify WordPress default emails
- * Version:           1.5.12
+ * Version:           1.5.14
  * Requires at least: 4.8
  * Requires PHP:	  7.1
  * Tested up to: 	  7.0
@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'MAILTPL_VERSION', '1.5.12' );
+define( 'MAILTPL_VERSION', '1.5.14' );
 define( 'MAILTPL_PLUGIN_FILE', __FILE__ );
 define( 'MAILTPL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MAILTPL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

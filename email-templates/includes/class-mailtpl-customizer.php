@@ -130,15 +130,13 @@ class Mailtpl_Customizer {
 				'panel' => 'mailtpl',
 			)
 		);
-		if( class_exists('WooCommerce') ){
-			$wp_customize->add_section(
-				'section_mailtpl_test',
-				array(
-					'title' => __( 'Send Test Email', 'email-templates' ),
-					'panel' => 'mailtpl',
-				)
-			);
-		}
+		$wp_customize->add_section(
+			'section_mailtpl_test',
+			array(
+				'title' => __( 'Send Test Email', 'email-templates' ),
+				'panel' => 'mailtpl',
+			)
+		);
 	
 		// Populate sections.
 		$this->section_mailtpl_email_type( $wp_customize );
